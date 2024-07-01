@@ -1,5 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# mine
+steps.md
+todo.md
+_*.md
+
+
+
+
 # dependencies
 /node_modules
 /.pnp
