@@ -22,9 +22,9 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
-export function navbar-v0() {
+export const NavbarV0: React.FC = () => {
   return (
-    <header className="flex h-16 w-full items-center px-4 md:px-6 border-b">
+    <header className="flex h-20 w-full items-center px-4 md:px-6 border-b">
       <Link href="#" className="flex items-center gap-2" prefetch={false}>
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only">Acme Inc</span>
@@ -79,7 +79,7 @@ export function navbar-v0() {
   )
 }
 
-function MountainIcon(props) {
+function MountainIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

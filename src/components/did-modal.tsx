@@ -3,8 +3,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaMinusCircle, FaPlusCircle, FaWindowClose, FaToggleOff, FaToggleOn, FaMehBlank, FaInfoCircle } from 'react-icons/fa';
 import Modal from 'react-modal';
-import Web5Context from '@/context/Web5Context';
+// import Web5Context from '@/context/Web5Context';
 import Image from 'next/image';
+import { randomPersonData, emptyPersonData } from '@/utils/keeps';
 import { PersonData } from '@/types';
 
 const hrColor = {
@@ -41,7 +42,14 @@ const DidModal = () => {
 
 
     // Import Web5Context Section
-    const { personData, setPersonData } = useContext(Web5Context) ?? {};
+    const contexts = {
+        personData: emptyPersonData,
+        setPersonData (obj: any) {
+            return obj
+        }
+    }
+
+    const { personData, setPersonData } = contexts ?? {};
 
     // Modal Control Section
     const openModal = () => {
@@ -95,7 +103,7 @@ const DidModal = () => {
         setFoodAllergies(updatedFoodAllergies);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { allergiesAndSensitivities: any; }) => ({
             ...personData,
             allergiesAndSensitivities: {
                 ...personData?.allergiesAndSensitivities,
@@ -138,7 +146,7 @@ const DidModal = () => {
         setFoodIntolerances(updatedFoodIntolerances);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { allergiesAndSensitivities: any; }) => ({
             ...personData,
             allergiesAndSensitivities: {
                 ...personData?.allergiesAndSensitivities,
@@ -225,7 +233,7 @@ const DidModal = () => {
         setPrescriptionDrugs(updatedPrescriptionDrugs);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { medications: any; }) => ({
             ...personData,
             medications: {
                 ...personData?.medications,
@@ -268,7 +276,7 @@ const DidModal = () => {
         setOverTheCounterMeds(updatedOverTheCounterMeds);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { medications: any; }) => ({
             ...personData,
             medications: {
                 ...personData?.medications,
@@ -314,7 +322,7 @@ const DidModal = () => {
         setDietarySupplements(updatedDietarySupplements);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { medications: any; }) => ({
             ...personData,
             medications: {
                 ...personData?.medications,
@@ -358,7 +366,7 @@ const DidModal = () => {
         setReligiousOrCultural(updatedReligiousOrCultural);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { dietaryRestrictions: any; }) => ({
             ...personData,
             dietaryRestrictions: {
                 ...personData?.dietaryRestrictions,
@@ -402,7 +410,7 @@ const DidModal = () => {
         setEthicalPreferences(updatedEthicalPreferences);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { dietaryRestrictions: any; }) => ({
             ...personData,
             dietaryRestrictions: {
                 ...personData?.dietaryRestrictions,
@@ -446,7 +454,7 @@ const DidModal = () => {
         setNutrientDeficiencies(updatedNutrientDeficiencies);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { nutritionalStatus: any; }) => ({
             ...personData,
             nutritionalStatus: {
                 ...personData?.nutritionalStatus,
@@ -490,7 +498,7 @@ const DidModal = () => {
         setNutritionalRiskFactors(updatedNutritionalRiskFactors);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { nutritionalStatus: any; }) => ({
             ...personData,
             nutritionalStatus: {
                 ...personData?.nutritionalStatus,
@@ -533,7 +541,7 @@ const DidModal = () => {
         setFoodPreferences(updatedFoodPreferences);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { personalPreferences: any; }) => ({
             ...personData,
             personalPreferences: {
                 ...personData?.personalPreferences,
@@ -576,7 +584,7 @@ const DidModal = () => {
         setCulturalFoodPractices(updatedCulturalFoodPractices);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { personalPreferences: any; }) => ({
             ...personData,
             personalPreferences: {
                 ...personData?.personalPreferences,
@@ -620,7 +628,7 @@ const DidModal = () => {
         setPreviousSurgeriesOrHospitalizations(updatedPreviousSurgeriesOrHospitalizations);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { pastMedicalHistory: any; }) => ({
             ...personData,
             pastMedicalHistory: {
                 ...personData?.pastMedicalHistory,
@@ -665,7 +673,7 @@ const DidModal = () => {
         setFamilyHistoryOfChronicDiseases(updatedFamilyHistoryOfChronicDiseases);
 
         if (!setPersonData) return;
-        setPersonData((personData) => ({
+        setPersonData((personData: { pastMedicalHistory: any; }) => ({
             ...personData,
             pastMedicalHistory: {
                 ...personData?.pastMedicalHistory,
@@ -785,7 +793,7 @@ const DidModal = () => {
         // For nested object, destructure the object for the specific field
         if (!setPersonData) return;
 
-        setPersonData((personData) => ({
+        setPersonData((personData: { [x: string]: any; }) => ({
             ...personData,
             [key]: {
                 ...personData?.[key],

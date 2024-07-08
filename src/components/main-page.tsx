@@ -1,6 +1,6 @@
 "use client";
 import DidModal from '@/components/did-modal'
-import { Web5Provider } from '@/context/Web5Context'
+// import { Web5Provider } from '@/context/Web5Context'
 import MarkdownPage from './markdown-page';
 import UploadImg from './upload-img';
 export default function MainPage() {
@@ -12,10 +12,10 @@ export default function MainPage() {
         {/* <MarkdownPage /> */}
         <UploadImg />
 
-        <Web5Provider>
+        {/* <Web5Provider> */}
 
-          <DidModal />
-        </Web5Provider>
+          {/* <DidModal /> */}
+        {/* </Web5Provider> */}
       </div>
     </>
 
