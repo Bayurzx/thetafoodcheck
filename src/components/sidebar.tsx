@@ -30,7 +30,12 @@ const Sidebar = () => {
     const session = {
         user: {
             image: "https://www.clker.com/cliparts/h/z/Z/5/f/x/100px-coffee-cup-hi.png",
-            name: "AB"
+            name: "Ade",
+            age: "29",
+            sex: "Male",
+            Height: "6'4\"",
+            BMI: "24.2",
+
         }
     }
 
@@ -81,7 +86,7 @@ const Sidebar = () => {
                         }}
 
                     >
-                        🤖 AutoDocs AI
+                        🤖 FoodCheck AI
                         <br />
                     </h2>
 

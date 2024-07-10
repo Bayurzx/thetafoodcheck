@@ -21,10 +21,11 @@ import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import Navbar from '@/components/navbar'
 
 export const NavbarV0: React.FC = () => {
   return (
-    <header className="flex h-20 w-full items-center px-4 md:px-6 border-b">
+    <header className="flex w-full items-center px-4 md:px-6 border-b">
       <Link href="#" className="flex items-center gap-2" prefetch={false}>
         <MountainIcon className="h-6 w-6" />
         <span className="sr-only">Acme Inc</span>
@@ -43,6 +44,9 @@ export const NavbarV0: React.FC = () => {
           Contact
         </Link>
       </nav>
+      <div className="ml-5">
+        <Navbar />
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="rounded-full ml-auto">
