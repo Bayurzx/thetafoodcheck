@@ -17,6 +17,25 @@ const nextConfig = {
         ],
     },
 
+
+    // async rewrites() {
+    //     return [
+    //       {
+    //         source: '/static/:path*',
+    //         destination: '/static-html/:path*',
+    //       },
+    //     ]
+    //   },
+    
+    // async rewrites() {
+    //     return [
+    //       {
+    //         source: '/',
+    //         destination: '/site/static/index.html',
+    //       },
+    //     ]
+    //   },    
+
 };
 
 export default nextConfig;

@@ -5,7 +5,9 @@ steps.md
 todo.md
 _*.md
 delete/
-
+**/assets/images
+**/assets/[m-r]*
+**/assets/css/scss
 
 
 # dependencies

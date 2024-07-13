@@ -44,7 +44,26 @@ const theta = {
   },
 };
 
-const { chains, publicClient } = configureChains([theta], [publicProvider()]);
+const thetaTestnet = {
+  id: 365,
+  name: 'Theta Testnet',
+  network: 'theta',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'TFUEL',
+    symbol: 'TFUEL',
+  },
+  rpcUrls: {
+    public: { http: [' https://eth-rpc-api-testnet.thetatoken.org/rpc'] },
+    default: { http: [' https://eth-rpc-api-testnet.thetatoken.org/rpc'] },
+  },
+  blockExplorers: {
+    etherscan: { name: 'Theta Explorer', url: 'https://testnet-explorer.thetatoken.org/' },
+    default: { name: 'Theta Explorer', url: 'https://testnet-explorer.thetatoken.org/' },
+  },
+};
+
+const { chains, publicClient } = configureChains([thetaTestnet, theta], [publicProvider()]);
 
 const connectors = connectorsForWallets([
   {

@@ -22,6 +22,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Navbar from '@/components/navbar'
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export const NavbarV0: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ export const NavbarV0: React.FC = () => {
         <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
           Pricing
         </Link>
+        <ThemeToggle />
         <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
           Contact
         </Link>
