@@ -27,14 +27,14 @@ const nextConfig = {
     //     ]
     //   },
     
-    // async rewrites() {
-    //     return [
-    //       {
-    //         source: '/',
-    //         destination: '/site/static/index.html',
-    //       },
-    //     ]
-    //   },    
+    async rewrites() {
+        return [
+          {
+            source: '/',
+            destination: '/site/static/index.html',
+          },
+        ]
+      },    
 
 };
 

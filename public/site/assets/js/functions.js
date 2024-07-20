@@ -868,7 +868,7 @@ $("#contactform").on("submit", function(e) {
 
   else {
     $.ajax({
-      url:"../../assets/php/contact-form.php",
+      url:"..//site/assets/php/contact-form.php",
       data:$(this).serialize(),
       type:"POST",
       success:function(data){

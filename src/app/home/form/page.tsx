@@ -3,7 +3,9 @@ import Sidebar from '@/components/sidebar'
 import OAuthLogin from '@/components/oauth-login'
 import FormProfile from '@/components/form-profile'
 
-export default function Home() {
+
+
+const Form = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 flex justify-center items-start min-h-screen">
@@ -22,3 +24,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Form;

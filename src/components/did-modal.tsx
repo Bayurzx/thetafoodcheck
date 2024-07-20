@@ -5,7 +5,7 @@ import { FaMinusCircle, FaPlusCircle, FaWindowClose, FaToggleOff, FaToggleOn, Fa
 import Modal from 'react-modal';
 // import Web5Context from '@/context/Web5Context';
 import Image from 'next/image';
-import { randomPersonData, emptyPersonData } from '@/utils/keeps';
+import { randomPersonData, emptyPersonData } from '@/lib/fx/keeps';
 import { PersonData } from '@/types';
 
 const hrColor = {

@@ -15,7 +15,7 @@ export function ThemeToggle() {
 
   return (
     <button onClick={toggleTheme}>
-      {theme === 'light' ? sunIcon() : moonIcon()}
+      {theme === 'dark' ? moonIcon() : sunIcon()}
     </button>
   )
 }

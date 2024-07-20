@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+// import "./globals.css";
+import '@/app/globals.css'
 import { NavbarV0 } from '@/components/component/navbarV0';
 import { OauthProviders } from "@/app/providers/oauth"
 import { ThemeProvider } from '@/app/providers/theme'
@@ -26,8 +27,11 @@ export default function RootLayout({
 
               <NavbarV0 />
               <main className="flex-grow">
+                <div className="container mx-auto flex justify-center items-start min-h-screen">
 
-                {children}
+
+                  {children}
+                </div>
               </main>
 
             </div>

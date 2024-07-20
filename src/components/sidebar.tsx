@@ -1,4 +1,5 @@
 'use client';
+import { signOut } from "next-auth/react";
 
 import { ReactNode, useState } from 'react';
 import Image from "next/image";
@@ -111,7 +112,7 @@ const Sidebar = () => {
                     <NavItem link={"#"} icon={<FaUserAlt className="text-xl" />} label="Profile" />
                     <NavItem link={"#"} icon={<FaEllipsisH className="text-xl" />} label="More" />
                 </nav>
-                <button onClick={() => ""} className="w-full bg-red-500 text-white rounded-full py-3 font-bold">
+                <button onClick={() => signOut()} className="w-full bg-red-500 text-white rounded-full py-3 font-bold">
                     Sign Out
                 </button>
 

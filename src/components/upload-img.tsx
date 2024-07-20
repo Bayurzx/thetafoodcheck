@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent, useRef } from 'react';
 import Image from 'next/image'
-import { randomPersonData } from '@/utils/keeps';
+import { randomPersonData } from '@/lib/fx/keeps';
 
 const NEXT_PUBLIC_FOODCHECK_AI_API = process.env["NEXT_PUBLIC_FOODCHECK_AI_API"] ?? 'http://localhost:3002/upload'
 
