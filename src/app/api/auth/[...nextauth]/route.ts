@@ -9,7 +9,7 @@ import clientPromise from "@/db/mongodb";
 
 
 export const authConfig: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise) as Adapter,
+    // adapter: MongoDBAdapter(clientPromise) as Adapter,
     
     providers: [
         GoogleProvider({
@@ -55,6 +55,7 @@ export const authConfig: NextAuthOptions = {
         signIn: "/home/auth",
         error: "/home/error",
     },
+    debug: true, // Enable debug messages in the console
 
 }
 
