@@ -5,7 +5,7 @@ import GitHubProvider from "next-auth/providers/github"
 
 // import { MongoDBAdapter } from '@auth/mongodb-adapter'
 // import { Adapter } from "next-auth/adapters";
-// import clientPromise from "@/db/mongodb";
+import clientPromise from "@/db/mongodb";
 
 
 export const authConfig: NextAuthOptions = {
@@ -35,7 +35,11 @@ export const authConfig: NextAuthOptions = {
     ],
 
     callbacks: {
-        session({ session, token }) {
+        async session({ session, token, user }) {
+            // console.log("session @ routes", session);
+            // console.log("token @ routes", token);
+            // console.log("user @ routes", user);
+            
             if (session.user) {
                 session.user.id = token.sub || "";
             }
@@ -48,6 +52,34 @@ export const authConfig: NextAuthOptions = {
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
         },
+
+
+        async signIn({ user, account, profile, email, credentials, }) {
+            // console.log("user @ routes", user);
+            // console.log("account @ routes", account);
+            // console.log("profile @ routes", profile);
+
+            const client = await clientPromise;
+            const db = client.db('users_db');
+            const usersCollection = db.collection('users');
+            
+            const existingUser = await usersCollection.findOne({ email: user.email });
+
+            if (!existingUser) {
+                await usersCollection.insertOne({
+                    email: user.email,
+                    name: user.name,
+                    image: user.image,
+                    provider: account?.provider,
+                    providerId: account?.providerAccountId,
+                    healthDataFilled: false, // Set default to false
+
+                });
+            }
+
+            return true;
+        },
+
 
     },
 

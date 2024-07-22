@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 import { HiUserCircle } from 'react-icons/hi';
 
@@ -10,8 +11,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ photo, setPhoto }) => {
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const base64 = await convertToBase64(file);
-      setPhoto(base64 as string);
+      if (file.size <= 10 * 1024 * 1024) { // 10MB limit
+        const base64 = await convertToBase64(file);
+        setPhoto(base64 as string);
+      } else {
+        alert('File size should be 10MB or less');
+      }
     }
   };
 
@@ -31,7 +36,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ photo, setPhoto }) => {
       </label>
       <div className="mt-2 flex items-center gap-x-3">
         {photo ? (
-          <img src={photo} alt="User Avatar" className="h-12 w-12 rounded-full" />
+          // <img src={photo} alt="User Avatar" className="h-12 w-12 rounded-full" />
+          <Image src={photo} alt="User Avatar" width={`100`} height={`100`} className="h-12 w-12 rounded-full" />
         ) : (
           <HiUserCircle aria-hidden="true" className="h-12 w-12 text-gray-300 dark:text-gray-400" />
         )}

@@ -1,5 +1,5 @@
 import clientPromise from '@/db/mongodb'
-import { MongoClient, Db, WithId, Document, Filter, UpdateFilter, Collection, OptionalUnlessRequiredId } from 'mongodb'
+import { MongoClient, Db, WithId, Document, Filter, UpdateFilter, Collection, OptionalUnlessRequiredId, InsertOneResult } from 'mongodb'
 
 interface HealthData {
     userId: string,
@@ -67,4 +67,11 @@ export async function findAll<T extends Document>(collectionName: string): Promi
     const collection = await getCollection<T>(collectionName);
     const results = await collection.find({}).toArray();
     return results as T[];
+}
+
+
+export async function insertOne<T extends Document>(collectionName: string, document: OptionalUnlessRequiredId<T>): Promise<string> {
+    const collection = await getCollection<T>(collectionName);
+    const result: InsertOneResult<T> = await collection.insertOne(document);
+    return result.insertedId.toString();
 }

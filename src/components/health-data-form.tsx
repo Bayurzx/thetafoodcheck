@@ -1,5 +1,5 @@
 'use client'
-import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction, FormEvent } from 'react';
 import DynamicInputField from '@/components/component/dynamicInputField';
 import HeightWeightInput from '@/components/component/heightWeightInput';
 import { HiUserCircle } from 'react-icons/hi';
@@ -9,14 +9,14 @@ type Setter<T> = Dispatch<SetStateAction<T[]>>;
 
 export default function HealthDataForm() {
 
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
+
   const [height, setHeight] = useState('');
   const [heightUnit, setHeightUnit] = useState('cm'); // cm or inches
   const [weight, setWeight] = useState('');
   const [weightUnit, setWeightUnit] = useState('kg'); // kg or lbs
   const [photo, setPhoto] = useState<string>('');
-
-
-
 
   const [allergiesAndSensitivities, setAllergiesAndSensitivities] = useState<string[]>(['']);
   const [medications, setMedications] = useState<string[]>(['']);
@@ -28,6 +28,9 @@ export default function HealthDataForm() {
   const [birthdate, setBirthdate] = useState('');
 
   const personData = {
+    name,
+    gender,
+    birthdate,
     height,
     heightUnit,
     weight,
@@ -39,25 +42,8 @@ export default function HealthDataForm() {
     nutrientDeficiencies,
     previousSurgeriesOrHospitalizations,
     familyHistoryOfChronicDiseases,
-    birthdate,
   }
 
-  // const handleAddField = (setter: Setter<string>, array: string[]) => {
-  //   setter([...array, '']);
-  // };
-
-  // const handleRemoveField = (index: number, setter: Setter<string>, array: string[]) => {
-  //   const newArray = [...array];
-  //   newArray.splice(index, 1);
-  //   setter(newArray);
-  // };
-
-
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number, setter: Setter<string>, array: string[]) => {
-  //   const newArray = [...array];
-  //   newArray[index] = e.target.value;
-  //   setter(newArray);
-  // };
 
   const handleBirthdateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBirthdate(e.target.value);
@@ -65,6 +51,36 @@ export default function HealthDataForm() {
 
   const themeHr = () => <hr className="border-t-2 border-gray-900 dark:border-gray-100" />
 
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = personData;
+
+
+
+    try {
+      const response = await fetch('/api/db/insertHealthData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('Data submitted successfully!');
+        console.log(result);
+        // Reset form or redirect as needed
+      } else {
+        alert('Failed to submit data');
+      }
+    } catch (error) {
+      console.error('Error submitting data:', error);
+      alert('An error occurred while submitting the data');
+    }
+  };
 
 
   return (
@@ -93,6 +109,9 @@ export default function HealthDataForm() {
                     name="name"
                     type="text"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-indigo-500 sm:text-sm sm:leading-6 dark:bg-gray-800"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+
                   />
                 </div>
               </div>
@@ -100,21 +119,6 @@ export default function HealthDataForm() {
 
 
 
-              {/* <div className="col-span-full mt-3 mb-3">
-                  
-                  <label htmlFor="photo" className="block text-md font-medium leading-6 text-gray-900 dark:text-gray-300">
-                    Photo
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                    <HiUserCircle aria-hidden="true" className="h-12 w-12 text-gray-300 dark:text-gray-400" />
-                    <button
-                      type="button"
-                      className="rounded-md bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    >
-                      Change
-                    </button>
-                  </div>
-                </div> */}
 
               <ImageUpload photo={photo} setPhoto={setPhoto} />
 
@@ -141,6 +145,9 @@ export default function HealthDataForm() {
                     id="gender"
                     name="gender"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-indigo-500 sm:text-sm sm:leading-6 dark:bg-gray-800"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+
                   >
                     <option value="">Select</option>
                     <option value="male">Male</option>
