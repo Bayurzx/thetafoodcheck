@@ -3,9 +3,9 @@ import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github"
 
-import { MongoDBAdapter } from '@auth/mongodb-adapter'
-import { Adapter } from "next-auth/adapters";
-import clientPromise from "@/db/mongodb";
+// import { MongoDBAdapter } from '@auth/mongodb-adapter'
+// import { Adapter } from "next-auth/adapters";
+// import clientPromise from "@/db/mongodb";
 
 
 export const authConfig: NextAuthOptions = {
@@ -55,7 +55,7 @@ export const authConfig: NextAuthOptions = {
         signIn: "/home/auth",
         error: "/home/error",
     },
-    debug: true, // Enable debug messages in the console
+    // debug: true, // Enable debug messages in the console
 
 }
 
