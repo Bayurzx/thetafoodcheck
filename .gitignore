@@ -4,6 +4,7 @@
 steps.md
 todo.md
 _*.md
+_x_*
 delete/
 **/assets/images
 **/assets/[m-r]*
