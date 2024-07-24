@@ -74,3 +74,25 @@ export type Web5ContextType = {
 export type Web5ProviderProps = {
     children: ReactNode;
 };
+
+// ************************************************************************
+
+// types.ts
+
+export interface UserHealthData {
+    name: string;
+    gender: string;
+    birthdate: string; // or Date if you prefer
+    height: number;
+    heightUnit: string;
+    weight: number;
+    weightUnit: string;
+    photo: string; // URL or base64 encoded string
+    allergiesAndSensitivities: string[];
+    medications: string[];
+    medicalConditions: string[];
+    nutrientDeficiencies: string[];
+    previousSurgeriesOrHospitalizations: string[];
+    familyHistoryOfChronicDiseases: string[];
+  }
+  

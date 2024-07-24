@@ -24,10 +24,23 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import Navbar from '@/components/navbar'
 import { ThemeToggle } from "@/components/theme-toggle"
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import { useEffect, useState } from "react"
 
 
 export const NavbarV0: React.FC = () => {
+  const { data: session, status } = useSession()
+  const [photo, setPhoto] = useState<string>('');
+  
+  useEffect(() => {
+    if (status === "authenticated" && session.user) {
+      console.log("session___:", session);
+      
+      setPhoto(session.user.image ?? "")
+    }
+  }, [status, session]);
+
+
 
   const handleSignOut = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
@@ -62,7 +75,8 @@ export const NavbarV0: React.FC = () => {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="rounded-full ml-auto">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder-user.jpg" />
+              {/* <AvatarImage src="/placeholder-user.jpg" /> */}
+              {photo && <AvatarImage src={photo} />}
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <span className="sr-only">Toggle user menu</span>

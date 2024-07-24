@@ -1,17 +1,21 @@
 'use client'
-import { useState, ChangeEvent, Dispatch, SetStateAction, FormEvent } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction, FormEvent, useEffect, useRef } from 'react';
 import DynamicInputField from '@/components/component/dynamicInputField';
 import HeightWeightInput from '@/components/component/heightWeightInput';
 import { HiUserCircle } from 'react-icons/hi';
 import ImageUpload from './component/imageUpload';
+import { useSession } from "next-auth/react"
+import { findOneIsFormFilled } from '@/lib/db/userDataCollection';
+
 
 type Setter<T> = Dispatch<SetStateAction<T[]>>;
 
 export default function HealthDataForm() {
+  const { data: session, status } = useSession()
 
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
-
+  const [birthdate, setBirthdate] = useState('');
   const [height, setHeight] = useState('');
   const [heightUnit, setHeightUnit] = useState('cm'); // cm or inches
   const [weight, setWeight] = useState('');
@@ -24,11 +28,57 @@ export default function HealthDataForm() {
   const [nutrientDeficiencies, setNutrientDeficiencies] = useState<string[]>(['']);
   const [previousSurgeriesOrHospitalizations, setPreviousSurgeriesOrHospitalizations] = useState<string[]>(['']);
   const [familyHistoryOfChronicDiseases, setFamilyHistoryOfChronicDiseases] = useState<string[]>(['']);
+  
+  const [userId, setUserId] = useState("");
+  const isPhotoInitialized = useRef(false); // To track if photo has been initialized
 
-  const [birthdate, setBirthdate] = useState('');
+
+  useEffect(() => {
+    if (status === "authenticated" && session.user) {
+      console.log("session___:", session);
+      
+      setUserId(session.user.id);
+      // setPhoto(session.user.image ?? "")
+
+      if (!isPhotoInitialized.current && session.user.image) {
+        setPhoto(session.user.image);
+        isPhotoInitialized.current = true;
+      }
+
+    }
+  }, [status, session]);
+
+  useEffect(() => {
+    if (!session?.user.id) return
+    IsFormFilled();
+    // const fetchedUserData = findOneIsFormFilled(session.user.id)
+    
+  }, [])
+  
+
+  const IsFormFilled = async () => {
+    try {
+      // Assuming we're querying the 'health_data' collection for the current user
+      // You might need to adjust the collection name and query based on your data structure
+      const collection = 'health_data';
+      const query = JSON.stringify({ providerId: userId }); // Replace with actual user ID or query
+
+      const response = await fetch(`/api/db/health_data_db/findOne2?collection=${collection}&dbQuery=${encodeURIComponent(query)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("health_data_db/findOne2", data);
+      } else {
+        console.error('Failed to fetch health data');
+      }
+    } catch (error) {
+      console.error('Error fetching health data:', error);
+    }
+  };
 
   const personData = {
     name,
+    userId,
     gender,
     birthdate,
     height,
@@ -49,25 +99,27 @@ export default function HealthDataForm() {
     setBirthdate(e.target.value);
   };
 
-  const themeHr = () => <hr className="border-t-2 border-gray-900 dark:border-gray-100" />
+  const themeHrThick = () => <hr className="border-y border-gray-900 dark:border-gray-100" />
+  const themeHr = () => <hr className="border-gray-900 dark:border-gray-100" />
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     const formData = personData;
-
-
-
+  
     try {
-      const response = await fetch('/api/db/insertHealthData', {
+      const response = await fetch('/api/db/health_data_db/insertOne', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          collectionName: 'health_data', // Specify the collection where you want to insert the data
+          document: formData,
+        }),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
         alert('Data submitted successfully!');
@@ -80,7 +132,7 @@ export default function HealthDataForm() {
       console.error('Error submitting data:', error);
       alert('An error occurred while submitting the data');
     }
-  };
+  };  
 
 
   return (
@@ -115,7 +167,7 @@ export default function HealthDataForm() {
                   />
                 </div>
               </div>
-              {themeHr()}
+              {/* {themeHr()} */}
 
 
 
@@ -170,7 +222,7 @@ export default function HealthDataForm() {
                   />
                 </div>
               </div>
-              {themeHr()}
+              {/* {themeHr()} */}
 
 
 
@@ -258,7 +310,7 @@ export default function HealthDataForm() {
                 {JSON.stringify(personData)}
               </div>
 
-
+              {themeHrThick()}
 
               <div className="mt-6 flex items-center justify-end gap-x-6">
                 <button type="button" className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">

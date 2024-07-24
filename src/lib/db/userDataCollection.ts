@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, ObjectId, WithId, Document, Filter, UpdateFilter, OptionalUnlessRequiredId } from 'mongodb'
+import { MongoClient, Db, Collection, ObjectId, WithId, Document, Filter, UpdateFilter, OptionalUnlessRequiredId, InsertOneResult } from 'mongodb'
 import clientPromise from '@/db/mongodb'
 
 export interface User {
@@ -14,7 +14,7 @@ const collectionName = 'users'
 // Helper function to get the user collection
 async function getUserCollection(): Promise<Collection<User>> {
   const client: MongoClient = await clientPromise
-  const db: Db = client.db('user_auth_db')
+  const db: Db = client.db('users_db')
   return db.collection<User>(collectionName)
 }
 
@@ -45,6 +45,13 @@ export async function updateUserEmailVerified(userId: string, verified: boolean)
 }
 
 // Generic database operations
+async function getCollection<T extends Document>(collectionName: string): Promise<Collection<T>> {
+  const client: MongoClient = await clientPromise
+  const db: Db = client.db('users_db')
+  return db.collection<T>(collectionName)
+}
+
+
 export async function findOne<T extends Document>(collectionName: string, filter: Filter<T>): Promise<T | null> {
   const collection = await getCollection<T>(collectionName)
   const result = await collection.findOne(filter)
@@ -82,8 +89,14 @@ export async function findAll<T extends Document>(collectionName: string): Promi
   return results as T[]
 }
 
-async function getCollection<T extends Document>(collectionName: string): Promise<Collection<T>> {
-  const client: MongoClient = await clientPromise
-  const db: Db = client.db('user_auth_db')
-  return db.collection<T>(collectionName)
+export async function insertOne<T extends Document>(collectionName: string, document: OptionalUnlessRequiredId<T>): Promise<string> {
+  const collection = await getCollection<T>(collectionName);
+  const result: InsertOneResult<T> = await collection.insertOne(document);
+  return result.insertedId.toString();
 }
+
+export async function findOneIsFormFilled(providerId: string): Promise<User | null> {
+  const userCollection = await getUserCollection()
+  return await userCollection.findOne({ providerId })
+}
+

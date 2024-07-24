@@ -2,15 +2,85 @@ import { useState, ChangeEvent, FormEvent, useRef } from 'react';
 import Image from 'next/image'
 import { randomPersonData } from '@/lib/fx/keeps';
 
-const NEXT_PUBLIC_FOODCHECK_AI_API = process.env["NEXT_PUBLIC_FOODCHECK_AI_API"] ?? 'http://localhost:3002/upload'
+interface HealthData {
+    // Define the structure of your health data here
+    // For example:
+    userId: string;
+    height: number;
+    weight: number;
+    // ... other fields
+}
+
+interface AnalysisResult {
+    warnings?: string[];
+    advice?: string[];
+    suggestions?: string[];
+    recommendations?: string[];
+    food_facts?: string[];
+}
+
+
+
+// const NEXT_PUBLIC_FOODCHECK_AI_API = process.env["NEXT_PUBLIC_FOODCHECK_AI_API"] ?? 'http://localhost:3002/upload'
 
 const UploadImg = () => {
     const [imageUrl, setImageUrl] = useState<string>('');
     const [isDrag, setIsDrag] = useState(false);
+    const [healthData, setHealthData] = useState<HealthData | null>(null);
+    const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropAreaRef = useRef<HTMLDivElement>(null);
 
 
+
+    // const handleImgSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+
+    //     const confirmed = window.confirm("Do you really want to submit?");
+
+    //     if (confirmed) {
+    //         // Continue with your form submission logic here...
+
+
+    //         const file = fileInputRef.current?.files?.[0];
+
+    //         if (file) {
+    //             const formData = new FormData();
+    //             formData.append('image_file', file);
+
+    //             const objectData = randomPersonData
+
+    //             formData.append('json_data', JSON.stringify(objectData));
+
+    //             try {
+    //                 const response = await fetch(NEXT_PUBLIC_FOODCHECK_AI_API, {
+    //                     method: 'POST',
+    //                     body: formData,
+    //                 });
+
+    //                 if (response.ok) {
+    //                     console.log('Image uploaded successfully!');
+    //                     console.log('response', response)
+    //                     // Reset the image preview after successful upload
+    //                     setImageUrl('');
+
+    //                     console.log('Form submitted!');
+    //                 } else {
+    //                     console.error('Failed to upload image.');
+    //                 }
+    //             } catch (error) {
+    //                 console.error('Error uploading image:', error);
+    //             }
+    //         } else {
+    //             alert("No file yet!")
+    //         }
+
+    //     } else {
+    //         console.log('Submission cancelled');
+    //     }
+
+    // };
 
     const handleImgSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,17 +92,16 @@ const UploadImg = () => {
 
 
             const file = fileInputRef.current?.files?.[0];
+            if (!file || !healthData) return;
+
 
             if (file) {
                 const formData = new FormData();
-                formData.append('image_file', file);
-
-                const objectData = randomPersonData
-
-                formData.append('json_data', JSON.stringify(objectData));
+                formData.append('image', file);
+                formData.append('health_data', JSON.stringify(healthData));
 
                 try {
-                    const response = await fetch(NEXT_PUBLIC_FOODCHECK_AI_API, {
+                    const response = await fetch('/api/ai', {
                         method: 'POST',
                         body: formData,
                     });
@@ -41,6 +110,9 @@ const UploadImg = () => {
                         console.log('Image uploaded successfully!');
                         console.log('response', response)
                         // Reset the image preview after successful upload
+                        const result = await response.json();
+                        setAnalysis(JSON.parse(result.analysis));
+
                         setImageUrl('');
 
                         console.log('Form submitted!');
@@ -49,6 +121,8 @@ const UploadImg = () => {
                     }
                 } catch (error) {
                     console.error('Error uploading image:', error);
+                    setAnalysis(null);
+
                 }
             } else {
                 alert("No file yet!")
@@ -101,6 +175,17 @@ const UploadImg = () => {
         }
     };
 
+
+    if (analysis) {
+        return (
+            <>
+                <div>
+                    <h3>Analysis Data:</h3>
+                    <pre>{JSON.stringify(analysis, null, 2)}</pre>
+                </div>
+            </>
+        )
+    }
 
 
 
@@ -155,6 +240,14 @@ const UploadImg = () => {
                 </button>
 
             </form>
+
+            {healthData && (
+                <div>
+                    <h3>Health Data:</h3>
+                    <pre>{JSON.stringify(healthData, null, 2)}</pre>
+                </div>
+            )}
+
         </>
     );
 }
