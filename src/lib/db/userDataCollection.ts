@@ -1,5 +1,5 @@
-import { MongoClient, Db, Collection, ObjectId, WithId, Document, Filter, UpdateFilter, OptionalUnlessRequiredId, InsertOneResult } from 'mongodb'
 import clientPromise from '@/db/mongodb'
+import { MongoClient, Db, Collection, ObjectId, WithId, Document, Filter, UpdateFilter, OptionalUnlessRequiredId, InsertOneResult } from 'mongodb'
 
 export interface User {
   _id: ObjectId
