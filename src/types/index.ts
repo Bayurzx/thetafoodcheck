@@ -81,11 +81,12 @@ export type Web5ProviderProps = {
 
 export interface UserHealthData {
     name: string;
+    userId: string;
     gender: string;
     birthdate: string; // or Date if you prefer
-    height: number;
+    height: string;
     heightUnit: string;
-    weight: number;
+    weight: string;
     weightUnit: string;
     photo: string; // URL or base64 encoded string
     allergiesAndSensitivities: string[];

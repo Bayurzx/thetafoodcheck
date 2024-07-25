@@ -15,7 +15,7 @@ export const getHealthData = async (userId: string): Promise<GetHealthDataRespon
     try {
         const client: MongoClient = await clientPromise;
         const db: Db = client.db("health_data_db");
-        const healthDataDoc: WithId<HealthData> | null = await db.collection<HealthData>("healthData").findOne({ userId });
+        const healthDataDoc: WithId<HealthData> | null = await db.collection<HealthData>("health_data").findOne({ userId });
         // If a document is found, remove the _id field before returning
         const healthData = healthDataDoc ? { ...healthDataDoc, _id: undefined } : null;
         return { healthData, error: null };

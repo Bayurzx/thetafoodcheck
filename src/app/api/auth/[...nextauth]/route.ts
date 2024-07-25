@@ -36,9 +36,9 @@ export const authConfig: NextAuthOptions = {
 
     callbacks: {
         async session({ session, token, user }) {
-            console.log("session @ routes", session);
-            console.log("token @ routes", token);
-            console.log("user @ routes", user);
+            // console.log("session @ routes", session);
+            // console.log("token @ routes", token);
+            // console.log("user @ routes", user);
             
             if (session.user) {
                 session.user.id = token.sub || "";
@@ -55,9 +55,9 @@ export const authConfig: NextAuthOptions = {
 
 
         async signIn({ user, account, profile, email, credentials, }) {
-            console.log("user @ routes", user);
-            console.log("account @ routes", account);
-            console.log("profile @ routes", profile);
+            // console.log("user @ routes", user);
+            // console.log("account @ routes", account);
+            // console.log("profile @ routes", profile);
 
             const client = await clientPromise;
             const db = client.db('users_db');
@@ -80,8 +80,8 @@ export const authConfig: NextAuthOptions = {
             return true;
         },
         async jwt({ token, user }) {
-            console.log("jwt_token @ routes", token);
-            console.log("jwt_user @ routes", user);
+            // console.log("jwt_token @ routes", token);
+            // console.log("jwt_user @ routes", user);
 
             if (user) {
                 token.id = user.id;
