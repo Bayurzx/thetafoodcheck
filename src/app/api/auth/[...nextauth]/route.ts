@@ -81,8 +81,8 @@ export const authConfig: NextAuthOptions = {
             return true;
         },
         async jwt({ token, user }) {
-            console.log("jwt_token @ routes", token);
-            console.log("jwt_user @ routes", user);
+            // console.log("jwt_token @ routes", token);
+            // console.log("jwt_user @ routes", user);
 
             if (user) {
                 token.id = user.id;

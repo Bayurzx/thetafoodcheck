@@ -14,7 +14,11 @@ export async function GET(
   }
 
   try {
-    const result = await find(db_name, collection_name, JSON.parse(dbQuery)); // decodeURIComponent
+    const result = await find(
+      db_name,
+      collection_name,
+      JSON.parse(decodeURIComponent(dbQuery))
+    );
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return NextResponse.json(

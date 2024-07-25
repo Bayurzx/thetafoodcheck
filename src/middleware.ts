@@ -1,22 +1,33 @@
-import { withAuth } from "next-auth/middleware"
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware"
+import { NextResponse } from "next/server"
 
-export default withAuth({
-    pages: {
-        signIn: "/home/auth",
-        error: "/home/error",
+export default withAuth(
+  function middleware(req: NextRequestWithAuth) {
+    const token = req.nextauth.token
+    const isApiRoute = req.nextUrl.pathname.startsWith('/api')
+    const isAdminRoute = req.nextUrl.pathname.startsWith('/home/admin')
+
+    if ((isApiRoute || isAdminRoute) && token?.role !== "admin") {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 })
+    }
+
+    return NextResponse.next()
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token
     },
-})
+    pages: {
+      signIn: "/home/auth",
+      error: "/home/error",
+    },
+  }
+)
 
 export const config = {
-    matcher: [
-        "/home/form/:path*",
-        "/home/dashboard/:path*",
-
-        // Exclude auth-related paths
-        // "/((?!api|_next/static|_next/image|favicon.ico).*)",
-        // "/((?!home/auth|home/error|api|_next/static|_next/image|favicon.ico).*)",
-        // "/((?!/home/auth|/home/error|/api|/_next/static|/_next/image|/favicon.ico).*)",
-
-    ]
-
+  matcher: [
+    "/home/form/:path*",
+    "/home/dashboard/:path*",
+    "/api/:path*",
+  ]
 }
