@@ -76,7 +76,7 @@ export default function HealthDataForm() {
 
   useEffect(() => {
     if (status === "authenticated" && session.user) {
-      console.log("session___:", session);
+      // console.log("session___:", session);
 
       setUserId(session.user.id);
       // setPhoto(session.user.image ?? "")
@@ -137,7 +137,7 @@ export default function HealthDataForm() {
       const formData = personData;
 
       try {
-        const response = await fetch('/api/db/health_data_db/insertOne', {
+        const response = await fetch('/api/db/health_data_db/health_data/insertOne', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

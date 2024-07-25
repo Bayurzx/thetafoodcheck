@@ -7,6 +7,7 @@ import GitHubProvider from "next-auth/providers/github"
 // import { Adapter } from "next-auth/adapters";
 import clientPromise from "@/db/mongodb";
 
+const ADMIN_EMAILS = (process.env.ALLOWED_ADMINS as string)?.split(",")
 
 export const authConfig: NextAuthOptions = {
     // adapter: MongoDBAdapter(clientPromise) as Adapter,
@@ -80,12 +81,16 @@ export const authConfig: NextAuthOptions = {
             return true;
         },
         async jwt({ token, user }) {
-            // console.log("jwt_token @ routes", token);
-            // console.log("jwt_user @ routes", user);
+            console.log("jwt_token @ routes", token);
+            console.log("jwt_user @ routes", user);
 
             if (user) {
                 token.id = user.id;
                 token.email = user.email; // Include email in token for further use
+                if (user?.email) {
+                    token.role = ADMIN_EMAILS.includes(user.email) ? 'admin' : 'user'
+                  }
+            
             }
             return token;
         },

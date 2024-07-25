@@ -34,7 +34,7 @@ export const NavbarV0: React.FC = () => {
   
   useEffect(() => {
     if (status === "authenticated" && session.user) {
-      console.log("session___:", session);
+      // console.log("session___:", session);
       
       setPhoto(session.user.image ?? "")
     }
