@@ -5,7 +5,7 @@ import '@/app/globals.css'
 import { NavbarV0 } from '@/components/component/navbarV0';
 import { OauthProviders } from "@/app/providers/oauth"
 import { ThemeProvider } from '@/app/providers/theme'
-import NavbarTaiwind from "@/components/component/navbarTailwind";
+import NavbarTaiwind from "@/components/navbarTailwind";
 
 const inter = Inter({ subsets: ["latin"] });
 
