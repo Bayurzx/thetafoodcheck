@@ -11,6 +11,7 @@
   "dependencies": {
     "@auth/mongodb-adapter": "^3.4.1",
     "@google-cloud/vision": "^4.3.0",
+    "@headlessui/react": "^2.1.2",
     "@humeai/voice": "^0.1.6",
     "@humeai/voice-react": "^0.1.6",
     "@radix-ui/react-avatar": "^1.1.0",

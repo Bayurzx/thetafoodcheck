@@ -5,6 +5,7 @@ import '@/app/globals.css'
 import { NavbarV0 } from '@/components/component/navbarV0';
 import { OauthProviders } from "@/app/providers/oauth"
 import { ThemeProvider } from '@/app/providers/theme'
+import NavbarTaiwind from "@/components/component/navbarTailwind";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,8 @@ export default function RootLayout({
           <OauthProviders>
             <div className="flex flex-col min-h-screen">
 
-              <NavbarV0 />
+              {/* <NavbarV0 /> */}
+              <NavbarTaiwind />
               <main className="flex-grow">
                 <div className="container mx-auto flex justify-center items-start min-h-screen">
 
