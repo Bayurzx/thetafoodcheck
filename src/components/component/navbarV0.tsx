@@ -22,7 +22,7 @@ import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import Navbar from '@/components/navbar'
+import Navbar from '@/components/dapps-navbar'
 import { ThemeToggle } from "@/components/theme-toggle"
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from "react"

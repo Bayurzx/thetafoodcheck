@@ -41,15 +41,11 @@ const nextConfig = {
     ],
   },
 
-
-  // async rewrites() {
-  //     return [
-  //       {
-  //         source: '/static/:path*',
-  //         destination: '/static-html/:path*',
-  //       },
-  //     ]
-  //   },
+// to fix: `Module not found: Can't resolve 'pino-pretty'`
+  webpack: (config) => {
+    config.externals.push("pino-pretty", "lokijs", "encoding");
+    return config;
+  },
 
   async rewrites() {
     return [

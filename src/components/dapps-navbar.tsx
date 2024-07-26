@@ -621,7 +621,7 @@ function YourApp() {
   );
 }
 
-function Navbar() {
+function DappsNavbar() {
   return (
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider chains={chains} initialChain={361}>
@@ -631,4 +631,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default DappsNavbar;
