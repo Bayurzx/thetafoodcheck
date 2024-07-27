@@ -12,6 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: { db_name:
     const result = await findAll(db_name, collection_name);
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
+    console.error("Error in GET request:", error);
     return NextResponse.json({ error: 'An error occurred while fetching all documents' }, { status: 500 });
   }
 }

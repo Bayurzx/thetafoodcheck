@@ -14,6 +14,8 @@ export async function PUT(request: NextRequest, { params }: { params: { db_name:
     const result = await updateOne(db_name, collection_name, query, update);
     return NextResponse.json({ success: result }, { status: 200 });
   } catch (error) {
+    console.error("Error in PUT request:", error);
+
     return NextResponse.json({ error: 'An error occurred while updating the document' }, { status: 500 });
   }
 }

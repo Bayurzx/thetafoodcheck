@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { RainbowKitProvider, connectorsForWallets, ConnectButton } from '@rainbow-me/rainbowkit';
-import { injectedWallet, walletConnectWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
+import { injectedWallet, /* walletConnectWallet,*/ metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import {
   useAccount,
   configureChains,
@@ -14,7 +14,6 @@ import {
   useContractEvent
 } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public'
-// import '../bootstrap.min.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { tnt721ABI, stakingTNT20ABI } from '../ABI';
 
@@ -71,7 +70,7 @@ const connectors = connectorsForWallets([
     wallets: [
       metaMaskWallet({ projectId: projectID, chains }),
       injectedWallet({ chains }),
-      walletConnectWallet({ projectId: projectID, chains }),
+      // walletConnectWallet({ projectId: projectID, chains }),
     ],
   },
 ]);
@@ -82,15 +81,15 @@ const wagmiConfig = createConfig({
   publicClient,
 });
 
-const contractConfigTNT721 = {
-  address: TNT721_CONTRACT,
-  abi: tnt721ABI,
-}
+// const contractConfigTNT721 = {
+//   address: TNT721_CONTRACT,
+//   abi: tnt721ABI,
+// }
 
-const contractConfigTNT20  = {
-  address: TNT20_CONTRACT,
-  abi: stakingTNT20ABI,
-}
+// const contractConfigTNT20  = {
+//   address: TNT20_CONTRACT,
+//   abi: stakingTNT20ABI,
+// }
 
 
 
@@ -578,37 +577,37 @@ function YourApp() {
   const { address } = useAccount();
   const [allTokens, setAllTokens] = useState(0);
 
-  const { data, refetch } = useContractReads({
-    contracts: [
-      // @ts-ignore
-      {
-        ...contractConfigTNT20,
-        functionName: 'totalSupply',
-      },
-      // @ts-ignore
-      {
-        ...contractConfigTNT20,
-        functionName: 'totalNFTsStaked',
-      },
-    ],
-    watch: true,
-  })
+  // const { data, refetch } = useContractReads({
+  //   contracts: [
+  //     // @ts-ignore
+  //     {
+  //       ...contractConfigTNT20,
+  //       functionName: 'totalSupply',
+  //     },
+  //     // @ts-ignore
+  //     {
+  //       ...contractConfigTNT20,
+  //       functionName: 'totalNFTsStaked',
+  //     },
+  //   ],
+  //   watch: true,
+  // })
 
-  useEffect(() => {
-    if(data) {
-      setAllTokens(Number((data[0].result ? BigInt(data[0].result.toString()) : BigInt('0')) / BigInt('10000000000000000'))/100)
-      setTotalNFTs(Number(data[1].result ? BigInt(data[1].result.toString()) : BigInt('0')))
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if(data) {
+  //     setAllTokens(Number((data[0].result ? BigInt(data[0].result.toString()) : BigInt('0')) / BigInt('10000000000000000'))/100)
+  //     setTotalNFTs(Number(data[1].result ? BigInt(data[1].result.toString()) : BigInt('0')))
+  //   }
+  // }, [data]);
 
-  useEffect(() => {
-    if(address) {
-      setConnected(true)
-      refetch()
-    } else {
-      setConnected(false)
-    }
-  }, [address]);
+  // useEffect(() => {
+  //   if(address) {
+  //     setConnected(true)
+  //     refetch()
+  //   } else {
+  //     setConnected(false)
+  //   }
+  // }, [address]);
 
   return (
     <div>
@@ -624,7 +623,7 @@ function YourApp() {
 function DappsNavbar() {
   return (
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains} initialChain={361}>
+        <RainbowKitProvider chains={chains} initialChain={365}>
           <YourApp />
         </RainbowKitProvider>
       </WagmiConfig>

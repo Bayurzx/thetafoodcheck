@@ -13,6 +13,8 @@ export async function POST(request: NextRequest, { params }: { params: { db_name
     const result = await insertMany(db_name, collection_name, body.documents);
     return NextResponse.json({ insertedIds: result }, { status: 201 });
   } catch (error) {
+    console.error("Error in POST request:", error);
+
     return NextResponse.json({ error: 'An error occurred while inserting the documents' }, { status: 500 });
   }
 }
