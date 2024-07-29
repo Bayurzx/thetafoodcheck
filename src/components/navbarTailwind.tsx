@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation'
+import Link from 'next/link';
 
 // import { ThemeToggle } from "@/components/theme-toggle"
 const ThemeToggle = dynamic(() => import('@/components/theme-toggle').then(module => module.ThemeToggle), {
@@ -16,10 +17,10 @@ const ThemeToggle = dynamic(() => import('@/components/theme-toggle').then(modul
 
 
 const navigation = [
-    { name: 'Home', href: '/' },
+    { name: 'Home', href: '/home' },
     { name: 'Dashboard', href: '/home/dashboard' },
     { name: 'Form', href: '/home/form' },
-    { name: 'Hume', href: '/home/hume' },
+    { name: 'Profile', href: '/home/profile' },
 ]
 
 function classNames(...classes: string[]) {
@@ -34,7 +35,6 @@ export default function NavbarTaiwind() {
 
     useEffect(() => {
         if (status === "authenticated" && session.user) {
-            // console.log("session___:", session);
 
             setPhoto(session.user.image ?? "")
         }
@@ -63,13 +63,17 @@ export default function NavbarTaiwind() {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex flex-shrink-0 items-center">
-                            <Image
-                                className="h-8 w-auto"
-                                alt="Your Company"
-                                src="/foodcheck.svg"
-                                width={32}
-                                height={32}
-                            />
+                            <Link href="/" passHref>
+                                <div className="cursor-pointer">
+                                    <Image
+                                        className="h-8 w-auto"
+                                        alt="Your Company"
+                                        src="/foodcheck.svg"
+                                        width={32}
+                                        height={32}
+                                    />
+                                </div>
+                            </Link>
                         </div>
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
@@ -146,9 +150,9 @@ export default function NavbarTaiwind() {
                                     </a>
                                 </MenuItem>
                                 <MenuItem>
-                                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                                    <Link href="#" onClick={handleSignOut} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                                         Sign out
-                                    </a>
+                                    </Link>
                                 </MenuItem>
                             </MenuItems>
                         </Menu>

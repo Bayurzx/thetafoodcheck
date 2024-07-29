@@ -61,36 +61,6 @@ export default function HealthDataForm() {
   });
 
 
-  // useEffect(() => {
-  //   if (!session?.user.id) return
-
-  //   const IsFormFilled = async () => {
-  //     try {
-  //       // Assuming we're querying the 'health_data' collection for the current user
-  //       // You might need to adjust the collection name and query based on your data structure
-  //       const query = JSON.stringify({ providerId: userId }); // Replace with actual user ID or query
-
-  //       const response = await fetch(`/api/db/health_data_db/health_data/findOne?dbQuery=${encodeURIComponent(query)}`);
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log("health_data_db/findOne", data);
-  //       } else {
-  //         console.error('Failed to fetch health data');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching health data:', error);
-  //     }
-  //   };
-
-
-  //   IsFormFilled();
-  //   // const fetchedUserData = findOneIsFormFilled(session.user.id)
-
-  // }, [])
-
-
-
   useEffect(() => {
     const checkFormFilled = async () => {
       if (healthData) {
@@ -261,19 +231,11 @@ export default function HealthDataForm() {
                     />
                   </div>
                 </div>
-                {/* {themeHr()} */}
-
-
 
 
                 <ImageUpload photo={photo} setPhoto={setPhoto} />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                  {/* Add similar blocks for gender, jobTitle, birthDate, height, weight */}
-
-
-                  {/* Repeat similar blocks for medicalConditions, medications */}
 
                 </div>
 
@@ -400,9 +362,9 @@ export default function HealthDataForm() {
                 </div>
 
 
-                <div className="w-20">
+                {/* <div className="w-20">
                   {JSON.stringify(personData)}
-                </div>
+                </div> */}
 
                 {themeHrThick()}
 

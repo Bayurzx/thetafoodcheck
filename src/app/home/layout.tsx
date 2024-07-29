@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/app/providers/theme'
 import NavbarTaiwind from "@/components/navbarTailwind";
 import WagmiProviderClient from "@/app/providers/wagmiProviderClient";
 import { HealthDataProvider } from "@/app/providers/userDataContext";
+import Footer from "@/components/footer";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -53,6 +54,7 @@ export default function RootLayout({
 
                       {children}
                     </div>
+                    <Footer />
                   </main>
 
                 </div>
