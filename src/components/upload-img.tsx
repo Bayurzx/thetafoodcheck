@@ -48,7 +48,7 @@ const UploadImg = () => {
 
                 try {
                     const fetchAiApiId = notifyLoading("Please wait... Analyzing Image...");
-                    const response = await fetch('/api/ai', {
+                    const response = await fetch('/api/ai/image', {
                         method: 'POST',
                         body: formData,
                     });
@@ -139,13 +139,13 @@ const UploadImg = () => {
     };
 
 // change to analysis
-    if (fakeAnalysis) {
+    if (analysis) {
         return (
             <>
                 <NotificationContainer theme={theme} />
 
                 <div>
-                <MarkdownPage data={fakeAnalysis} />
+                <MarkdownPage data={analysis} />
                 </div>
             </>
         )
@@ -203,8 +203,8 @@ const UploadImg = () => {
 
             {healthData && (
                 <div className='max-w-sm'>
-                    <h3>Health Data:</h3>
-                    <pre>{JSON.stringify(healthData, () => { healthData.photo = "" }, 2)}</pre>
+                    <h3>Health Data is ready {healthData.name}!</h3>
+                    {/* <pre>{JSON.stringify(healthData, () => { healthData.photo = "" }, 2)}</pre> */}
                 </div>
             )}
 
