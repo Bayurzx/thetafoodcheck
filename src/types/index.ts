@@ -106,3 +106,18 @@ export interface AuthData {
     healthDataFilled?: boolean;
 }
 
+
+export type MarkdownInputObject = {
+    warnings: string[] | Record<string, any>;
+    advice: string[] | Record<string, any>;
+    suggestions: string[] | Record<string, any>;
+    recommendations: string[] | Record<string, any>;
+    ingredients: string[] | Record<string, any>;
+    food_facts: string[] | Record<string, any>;
+    [key: string]: any;
+  };
+  
+  export interface MarkdownProps {
+    data: MarkdownInputObject;
+  }
+  

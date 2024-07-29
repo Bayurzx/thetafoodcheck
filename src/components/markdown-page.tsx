@@ -1,36 +1,62 @@
-import React from 'react'
-import ReactMarkdown from 'react-markdown';
+'use client'
+import React from 'react';
+import Markdown from 'react-markdown';
+import {MarkdownInputObject, MarkdownProps} from '@/types'
 
-
-const MarkdownPage = () => {
-
-    const dummyMarkdownContent = `
-## Warnings
-
-- Discontinue use if you experience any adverse effects
-- Reduce the dosage if the product causes an increase in your normal bowel movements
-
-## Advice
-
-It's important to be cautious with this product given your medical conditions and medications. It's best to consult with a healthcare professional before use.
-
-## Food_facts
-
-### Stinging nettle
-
-May cause allergic reactions in some individuals, especially those with a history of allergies to plants like ragweed, marigolds, daisies, and chrysanthemums.
-
-### Pygeum, Saw palmetto, Viscum album
-
-Limited research on the safety and efficacy of these ingredients, especially in combination with your medical conditions and medications.
-
-`
-    return (
-        <div className='prose dark:prose-invert'>
-            <ReactMarkdown>{dummyMarkdownContent}</ReactMarkdown>
-        </div>
-
-    )
+function replaceFoodFact(input: string): string {
+    return input.replace(/Food_facts/g, "Food Facts");
 }
+
+const objectToMarkdown = (obj: Record<string, any>, level: number = 1): string => {
+  let markdown = '';
+  const indent = '  '.repeat(level);
+
+  for (const key in obj) {
+    if (Array.isArray(obj[key])) {
+      markdown += `${indent}- ${key}: ${obj[key].join(', ')}\n`;
+    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+      markdown += `${indent}- **${key}:**\n`;
+      markdown += objectToMarkdown(obj[key], level + 1);
+    } else {
+      markdown += `${indent}- **${key}:** ${obj[key]}\n`;
+    }
+  }
+
+  return (replaceFoodFact(markdown));
+};
+
+const convertToMarkdown = (data: MarkdownInputObject): string => {
+  const keys = ['warnings', 'advice', 'suggestions', 'recommendations', 'ingredients', 'food_facts'];
+  let markdownText = '';
+
+  keys.forEach(key => {
+    if (Array.isArray(data[key])) {
+      markdownText += `## ${key.charAt(0).toUpperCase() + key.slice(1)}\n\n`;
+      data[key].forEach((item: string) => {
+        markdownText += `- ${item}\n`;
+      });
+      markdownText += '\n';
+    } else if (typeof data[key] === 'object' && data[key] !== null) {
+      markdownText += `## ${key.charAt(0).toUpperCase() + key.slice(1)}\n\n`;
+      markdownText += objectToMarkdown(data[key]);
+      markdownText += '\n';
+    }
+  });
+
+  return markdownText;
+};
+
+const MarkdownPage: React.FC<MarkdownProps> = ({ data }) => {
+  const markdownText = convertToMarkdown(data);
+  console.log(markdownText);
+  
+
+  return (
+    <div className='prose dark:prose-invert'>
+      <h1>Markdown Preview</h1>
+      <Markdown>{markdownText}</Markdown>
+    </div>
+  );
+};
 
 export default MarkdownPage;

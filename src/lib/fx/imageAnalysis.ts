@@ -24,8 +24,8 @@ export async function analyzeImage(file: File, health_data: string): Promise<str
     model: "gpt-4o-mini",
     response_format: { type: "json_object" },
     messages: [
-      { role: 'system', content: 'You are a helpful nutrition expert designed to output JSON. You only return with any or all of this: warnings, advice, suggestions, recommendations and food_facts as keys' },
-      { role: 'user', content: `Write warnings, advice, suggestions , recommendations and/or food_facts for the patient about the content of the consumables: ${extractedText} ### based on this health data: ${JSON.stringify(health_data)}` }
+      { role: 'system', content: 'You are a helpful nutrition expert designed to output JSON. You only return with any or all of this: warnings, advice, suggestions, recommendations, ingredients and food_facts as keys' },
+      { role: 'user', content: `Write warnings, advice, suggestions , recommendations, ingredients and/or food_facts for the patient about the content of the consumables: ${extractedText} ### based on this health data: ${JSON.stringify(health_data)}` }
     ],
   });
 

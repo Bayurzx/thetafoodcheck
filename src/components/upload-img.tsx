@@ -1,27 +1,22 @@
 import { useState, ChangeEvent, FormEvent, useRef } from 'react';
 import Image from 'next/image'
-import { UserHealthData } from '@/types'
+import { MarkdownInputObject } from '@/types'
 import { useHealthData } from '@/app/providers/userDataContext';
 import NotificationContainer from '@/components/notifications-container';
-import { notifySuccess, notifyError, notifyLoading, updateLoading  } from '@/lib/utils/notifications';
+import { notifySuccess, notifyError, notifyLoading, updateLoading } from '@/lib/utils/notifications';
 import { useTheme } from '@/app/providers/theme'; // Assuming you have a theme provider
 import { truncateTo256 } from '@/lib/fx/conversion';
+import MarkdownPage from './markdown-page';
+import { fakeAnalysis } from '@/lib/utils/faker';
 
 
 
-interface AnalysisResult {
-    warnings?: string[];
-    advice?: string[];
-    suggestions?: string[];
-    recommendations?: string[];
-    food_facts?: string[];
-}
 
 const UploadImg = () => {
     const [imageUrl, setImageUrl] = useState<string>('');
     const [isDrag, setIsDrag] = useState(false);
     // const [healthData, setHealthData] = useState<UserHealthData | null>(null);
-    const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
+    const [analysis, setAnalysis] = useState<MarkdownInputObject | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropAreaRef = useRef<HTMLDivElement>(null);
@@ -62,7 +57,7 @@ const UploadImg = () => {
                         console.log('Image uploaded successfully!');
                         notifySuccess("Image uploaded successfully!")
 
-                        console.log('response', response)
+                        // console.log('response', response)
                         // Reset the image preview after successful upload
                         const result = await response.json();
                         setAnalysis(JSON.parse(result.analysis));
@@ -81,7 +76,7 @@ const UploadImg = () => {
                 } catch (error) {
                     console.error('Error uploading image:', error);
                     notifyError(`Failed to upload image: ${truncateTo256(error)}`)
-                    
+
                     setAnalysis(null);
 
                 }
@@ -133,18 +128,24 @@ const UploadImg = () => {
 
         if (file) {
             reader.readAsDataURL(file);
+
+            // Set the file in the file input ref
+            if (fileInputRef.current) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInputRef.current.files = dataTransfer.files;
+            }
         }
     };
 
-
-    if (analysis) {
+// change to analysis
+    if (fakeAnalysis) {
         return (
             <>
                 <NotificationContainer theme={theme} />
 
                 <div>
-                    <h2>Analysis Data:</h2>
-                    <pre>{JSON.stringify(analysis, null, 2)}</pre>
+                <MarkdownPage data={fakeAnalysis} />
                 </div>
             </>
         )
@@ -176,15 +177,15 @@ const UploadImg = () => {
                         <label htmlFor="file-upload">Drag & drop or click to select an image (less than 10mb)</label>
                         {imageUrl ? (
                             <div className="flex justify-center mt-4">
-                                <Image src={imageUrl} alt="Uploaded image" width={"200"} height={"200"} className="object-contain" />
+                                <Image src={imageUrl} alt="Uploaded image" width={200} height={200} className="object-contain" />
                             </div>
                         ) : (
                             <div className="flex justify-center mt-4">
                                 <label htmlFor="file-upload">
                                     {isDrag ? (
-                                        <Image src={'/cloud-eating.gif'} alt="Drag image" width={"200"} height={"200"} className="object-contain" unoptimized />
+                                        <Image src={'/cloud-eating.gif'} alt="Drag image" width={200} height={200} className="object-contain" unoptimized />
                                     ) : (
-                                        <Image src={'/feed-cloud.png'} alt="Default image" width={"200"} height={"200"} className="object-contain" />
+                                        <Image src={'/feed-cloud.png'} alt="Default image" width={200} height={200} className="object-contain" />
                                     )}
                                 </label>
                             </div>

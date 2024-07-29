@@ -9,7 +9,7 @@ export default function MainPage() {
     <>
       {/* <div className="flex-grow bg-black p-8 overflow-y-auto"> */}
       <div className="px-10">
-        Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys Hello Guys
+        Main Page
         {/* <MarkdownPage /> */}
         <UploadImg />
 

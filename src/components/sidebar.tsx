@@ -62,7 +62,7 @@ const Sidebar = () => {
 
                 {session?.user?.image && <Image
                     width={120}
-                    height={90}
+                    height={120}
                     className={`rounded-full sidebarImg ${styles.sidebarImg}`}
                     src={session?.user?.image}
                     alt="User profile"
