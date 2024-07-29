@@ -143,7 +143,7 @@ const UploadImg = () => {
                 <NotificationContainer theme={theme} />
 
                 <div>
-                    <h3>Analysis Data:</h3>
+                    <h2>Analysis Data:</h2>
                     <pre>{JSON.stringify(analysis, null, 2)}</pre>
                 </div>
             </>
