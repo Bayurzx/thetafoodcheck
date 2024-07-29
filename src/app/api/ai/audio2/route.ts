@@ -1,23 +1,21 @@
 import { NextResponse } from 'next/server';
-import { analyzeImage } from '@/lib/fx/imageAnalysis';
+import { analyseAudio } from '@/lib/fx/audioAnalysis2';
 
 export async function POST(request: Request) {
-  console.log("AI request started!");
-  
-  const formData = await request.formData();
-  
-  const file = formData.get('image') as File;
-  const health_data = formData.get('health_data') as string;
+    console.log("AI request started!");
 
-  if (!file) {
-    return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
-  }
+    try {
+        const formData = await request.formData();
+        const audioFile = formData.get('audio');
 
-  try {
-    const analysis = await analyzeImage(file, health_data);
-    return NextResponse.json({ analysis });
-  } catch (error) {
-    console.error('Error analyzing image:', error);
-    return NextResponse.json({ error: 'Error analyzing image!' }, { status: 500 });
-  }
+        if (!audioFile || !(audioFile instanceof Blob)) {
+            return NextResponse.json({ error: 'Audio file is required' }, { status: 400 });
+        }
+
+        const analysisResult = await analyseAudio(audioFile);
+        return NextResponse.json(analysisResult, { status: 200 });
+    } catch (error) {
+        console.error('Error processing audio:', error);
+        return NextResponse.json({ error: 'Failed to analyze audio' }, { status: 500 });
+    }
 }

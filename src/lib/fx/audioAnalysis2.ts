@@ -1,29 +1,48 @@
-// src/lib/fx/audioAnalysis.ts
-import fs from 'fs';
 import OpenAI from 'openai';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import FormData from 'form-data';
 
 const openai = new OpenAI();
 
-export const analyseAudio = async (filePath: string): Promise<string> => {
-  const transcription = await openai.audio.transcriptions.create({
-    file: fs.createReadStream(filePath),
-    model: 'whisper-1',
-    response_format: 'text',
-  });
+export async function analyseAudio(audioBlob: Blob): Promise<any> {
+    // Convert Blob to a Buffer
+    const audioBuffer = Buffer.from(await audioBlob.arrayBuffer());
+    
+    // Save Buffer to a temporary file
+    const tempDir = os.tmpdir();
+    const tempFilePath = path.join(tempDir, 'temp-audio.wav');
+    fs.writeFileSync(tempFilePath, audioBuffer);
 
-  const healthData = await getHealthDataFromText(transcription.text);
+    // Create form-data object
+    const form = new FormData();
+    form.append('file', fs.createReadStream(tempFilePath));
+    form.append('model', 'whisper-1');
+    form.append('response_format', 'text');
 
-  return healthData;
-};
+    // Transcription request
+    const transcription = await openai.audio.transcriptions.create({
+        file: fs.createReadStream(tempFilePath),
+        model: 'whisper-1',
+        response_format: 'text',
+    });
 
-const getHealthDataFromText = async (text: string): Promise<string> => {
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-      { role: 'system', content: 'Extract health data from the following text.' },
-      { role: 'user', content: text },
-    ],
-  });
+    // Delete the temporary file
+    fs.unlinkSync(tempFilePath);
 
-  return response.choices[0].message.content || 'No analysis available.';
-};
+    const transcriptionText = transcription.text;
+
+    // Further processing to extract specific health data from the transcription
+    // For demonstration purposes, let's assume we extract some health data
+    const healthData = extractHealthData(transcriptionText);
+
+    return healthData;
+}
+
+function extractHealthData(text: string): any {
+    // Implement your logic to extract specific health data from the transcription text
+    return {
+        extractedData: text, // Replace with actual extracted data
+    };
+}

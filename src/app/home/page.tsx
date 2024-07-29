@@ -13,22 +13,18 @@ const Home = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="w-full max-w-2xl px-4 py-8 ">
-      {/* <Sidebar />
-        <MainPage /> 
-        <OAuthLogin /> */}
-      <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Hello! This is a theme-responsive page.
-        </p>
-        <button onClick={() => notifySuccess('This is a success message!')}>Show Success</button>
-        <button onClick={() => notifyError(`Error: ${truncateTo256("ypp")}`)}>Show Error</button>
-        <NotificationContainer theme={theme} />
+    <>
+      <NotificationContainer theme={theme} />
 
-        {/* <FormProfile /> */}
+      <div className="w-full max-w-2xl px-4 py-8 ">
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            Hello! This is a theme-responsive page.
+          </p>
+
+        </div>
       </div>
-
-    </div>
+    </>
   );
 }
 

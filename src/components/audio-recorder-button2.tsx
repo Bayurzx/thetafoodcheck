@@ -1,74 +1,78 @@
-'use client';
+import React, { useState, useRef } from 'react';
 
-import React, { useState } from 'react';
-import { useTheme } from '@/app/providers/theme';
-import { notifyError } from '@/lib/utils/notifications';
+const AudioRecorderButton2: React.FC = () => {
+    const [isRecording, setIsRecording] = useState(false);
+    const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+    const [analysisData, setAnalysisData] = useState<any>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
-const AudioRecorderButton: React.FC = () => {
-  const [isRecording, setIsRecording] = useState(false);
-  const [audioData, setAudioData] = useState<string>('');
-  const { theme } = useTheme();
+    const handleStartRecording = () => {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorderRef.current = mediaRecorder;
 
-  const startRecording = async () => {
-    if (!navigator.mediaDevices || !window.MediaRecorder) {
-      notifyError('Audio recording is not supported in this browser.');
-      return;
-    }
+                const audioChunks: Blob[] = [];
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
 
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new MediaRecorder(stream);
-    const audioChunks: Blob[] = [];
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    setAudioBlob(audioBlob);
+                    await handleAudioSubmit(audioBlob);
+                };
 
-    mediaRecorder.ondataavailable = (event) => {
-      audioChunks.push(event.data);
+                mediaRecorder.start();
+                setIsRecording(true);
+            })
+            .catch(error => {
+                console.error('Error accessing microphone:', error);
+            });
     };
 
-    mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-      const formData = new FormData();
-      formData.append('file', audioBlob);
-
-      try {
-        const response = await fetch('/api/ai/audio', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to process audio');
-        }
-
-        const data = await response.json();
-        setAudioData(data.text);
-      } catch (error) {
-        if (error instanceof Error) {
-          notifyError(error.message);
-        } else {
-          notifyError('An unknown error occurred.');
-        }
-      }
+    const handleStopRecording = () => {
+        mediaRecorderRef.current?.stop();
+        setIsRecording(false);
     };
 
-    mediaRecorder.start();
-    setIsRecording(true);
+    const handleAudioSubmit = async (audioBlob: Blob) => {
+        const formData = new FormData();
+        formData.append('audio', audioBlob);
 
-    setTimeout(() => {
-      mediaRecorder.stop();
-      setIsRecording(false);
-    }, 5000); // Record for 5 seconds
-  };
+        try {
+            const response = await fetch('/api/ai/audio', {
+                method: 'POST',
+                body: formData,
+            });
 
-  return (
-    <div>
-      <button
-        onClick={startRecording}
-        className={`px-4 py-2 rounded ${isRecording ? 'bg-red-500' : 'bg-blue-500'} text-white`}
-      >
-        {isRecording ? 'Recording...' : 'Start Recording'}
-      </button>
-      {audioData && <p>Transcribed Text: {audioData}</p>}
-    </div>
-  );
+            if (response.ok) {
+                const data = await response.json();
+                setAnalysisData(data);
+            } else {
+                console.error('Failed to process audio');
+            }
+        } catch (error) {
+            console.error('Error processing audio:', error);
+        }
+    };
+
+    return (
+        <div>
+            <button
+                onClick={isRecording ? handleStopRecording : handleStartRecording}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+                {isRecording ? 'Stop Recording' : 'Start Recording'}
+            </button>
+            {analysisData && (
+                <div>
+                    <h3>Analysis Data:</h3>
+                    <pre>{JSON.stringify(analysisData, null, 2)}</pre>
+                </div>
+            )}
+        </div>
+    );
 };
 
-export default AudioRecorderButton;
+export default AudioRecorderButton2;
