@@ -48,7 +48,7 @@ export function cmToFeetInches(cmString: string): string {
     return `${feet}'${Math.round(remainingInches)}"`;
 }
 
-function calculateBMI(weightStr: string, heightStr: string): number {
+export function calculateBMI(weightStr: string, heightStr: string): number {
     if (!weightStr.trim() || !heightStr.trim()) {
         throw new Error('Please provide both weight and height values.');
     }
@@ -100,7 +100,7 @@ function calculateBMI(weightStr: string, heightStr: string): number {
 // testBMI('70', '300');    // Excessive height
   
 
-function calculateBodyFatNavy(gender: string, heightStr: string, waistStr: string, neckStr: string, hipStr?: string): number {
+export function calculateBodyFatNavy(gender: string, heightStr: string, waistStr: string, neckStr: string, hipStr?: string): number {
     // Trim inputs
     gender = gender.trim().toLowerCase();
     heightStr = heightStr.trim();
@@ -182,7 +182,28 @@ function calculateBodyFatNavy(gender: string, heightStr: string, waistStr: strin
 // testBodyFat('female', '165', '80', '35'); // Missing hip for female
 
 
-
+/**
+ * Truncates a string to a maximum of 256 characters.
+ * If the string is longer than 256 characters, it will be cut off and an ellipsis (...) will be added.
+ * 
+ * @param str - The input string to be truncated
+ * @returns The truncated string
+ */
+export function truncateTo256(str: any): string {
+    const maxLength = 256;
+  
+    // Convert non-string input to string
+    if (typeof str !== 'string') {
+      str = JSON.stringify(str);
+    }
+  
+    if (str.length <= maxLength) {
+      return str;
+    }
+  
+    return str.slice(0, maxLength - 3) + '...';
+  }
+  
 
 
 
@@ -194,18 +215,18 @@ function calculateBodyFatNavy(gender: string, heightStr: string, waistStr: strin
 
 
 // Example usage
-try {
-    const feetAndInches: string = "6'4\"";
-    const cmValue: number = feetInchesToCm(feetAndInches);
-    console.log(`${feetAndInches} is equal to ${cmValue.toFixed(2)} cm`);
+// try {
+//     const feetAndInches: string = "6'4\"";
+//     const cmValue: number = feetInchesToCm(feetAndInches);
+//     console.log(`${feetAndInches} is equal to ${cmValue.toFixed(2)} cm`);
 
-    const cmString: string = cmValue.toFixed(2);
-    const backToFeetInches: string = cmToFeetInches(cmString);
-    console.log(`${cmString} cm is approximately ${backToFeetInches}`);
+//     const cmString: string = cmValue.toFixed(2);
+//     const backToFeetInches: string = cmToFeetInches(cmString);
+//     console.log(`${cmString} cm is approximately ${backToFeetInches}`);
 
-    // Additional test cases
-    console.log(cmToFeetInches("180"));
-    console.log(cmToFeetInches("72.5"));
-} catch (error) {
-    console.error("Error:", (error as Error).message);
-}
+//     // Additional test cases
+//     console.log(cmToFeetInches("180"));
+//     console.log(cmToFeetInches("72.5"));
+// } catch (error) {
+//     console.error("Error:", (error as Error).message);
+// }

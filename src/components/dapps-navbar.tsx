@@ -62,7 +62,27 @@ const thetaTestnet = {
   },
 };
 
-const { chains, publicClient } = configureChains([thetaTestnet, theta], [publicProvider()]);
+
+const sepolia = {
+  id: 11155111,
+  name: 'Sepolia',
+  network: 'sepolia',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Sepolia Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    public: { http: ['https://sepolia.infura.io/v3/22206d86398a42babb62eb33c1382a83'] },
+    default: { http: ['https://sepolia.infura.io/v3/22206d86398a42babb62eb33c1382a83'] },
+  },
+  blockExplorers: {
+    etherscan: { name: 'Etherscan', url: 'https://sepolia.etherscan.io' },
+    default: { name: 'Etherscan', url: 'https://sepolia.etherscan.io' },
+  },
+};
+
+const { chains, publicClient } = configureChains([thetaTestnet, theta, sepolia], [publicProvider()]);
 
 const connectors = connectorsForWallets([
   {
@@ -622,11 +642,11 @@ function YourApp() {
 
 function DappsNavbar() {
   return (
-      <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains} initialChain={365}>
+      // <WagmiConfig config={wagmiConfig}>
+      //   <RainbowKitProvider chains={chains} initialChain={365}>
           <YourApp />
-        </RainbowKitProvider>
-      </WagmiConfig>
+      //   </RainbowKitProvider>
+      // </WagmiConfig>
   );
 }
 

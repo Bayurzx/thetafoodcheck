@@ -1,8 +1,13 @@
 import { ImageAnnotatorClient } from '@google-cloud/vision';
 import { OpenAI } from 'openai';
 
-const keyFilename = process.env.KEY_FILE;
-const visionClient = new ImageAnnotatorClient({ keyFilename });
+const keyFileContent = process.env.KEY_FILE;
+if (!keyFileContent) {
+  throw new Error('The KEY_FILE_CONTENT environment variable is not set.');
+}
+const credentials = JSON.parse(keyFileContent);
+
+const visionClient = new ImageAnnotatorClient({ credentials });
 const openai = new OpenAI();
 
 export async function analyzeImage(file: File, health_data: string): Promise<string> {

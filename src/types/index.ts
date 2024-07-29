@@ -82,18 +82,27 @@ export type Web5ProviderProps = {
 export interface UserHealthData {
     name: string;
     userId: string;
-    gender: string;
-    birthdate: string; // or Date if you prefer
-    height: string;
-    heightUnit: string;
-    weight: string;
-    weightUnit: string;
-    photo: string; // URL or base64 encoded string
-    allergiesAndSensitivities: string[];
-    medications: string[];
-    medicalConditions: string[];
-    nutrientDeficiencies: string[];
-    previousSurgeriesOrHospitalizations: string[];
-    familyHistoryOfChronicDiseases: string[];
-  }
-  
+    gender?: string;
+    birthdate?: string; // or Date if you prefer
+    height?: string;
+    heightUnit?: string;
+    weight?: string;
+    weightUnit?: string;
+    photo?: string; // URL or base64 encoded string
+    allergiesAndSensitivities?: string[];
+    medications?: string[];
+    medicalConditions?: string[];
+    nutrientDeficiencies?: string[];
+    previousSurgeriesOrHospitalizations?: string[];
+    familyHistoryOfChronicDiseases?: string[];
+}
+
+export interface AuthData {
+    email: string;
+    name?: string;
+    image?: string;
+    provider?: string;
+    providerId?: string;
+    healthDataFilled?: boolean;
+}
+

@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server';
 import { analyzeImage } from '@/lib/fx/imageAnalysis';
 
 export async function POST(request: Request) {
+  console.log("AI request started!");
+  
   const formData = await request.formData();
+  
   const file = formData.get('image') as File;
   const health_data = formData.get('health_data') as string;
 
@@ -15,6 +18,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ analysis });
   } catch (error) {
     console.error('Error analyzing image:', error);
-    return NextResponse.json({ error: 'Error analyzing image' }, { status: 500 });
+    return NextResponse.json({ error: 'Error analyzing image!' }, { status: 500 });
   }
 }

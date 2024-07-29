@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// import "./globals.css";
 import '@/app/globals.css'
-import { NavbarV0 } from '@/components/component/navbarV0';
+// import { NavbarV0 } from '@/components/component/navbarV0';
 import { OauthProviders } from "@/app/providers/oauth"
 import { ThemeProvider } from '@/app/providers/theme'
 import NavbarTaiwind from "@/components/navbarTailwind";
+import WagmiProviderClient from "@/app/providers/wagmiProviderClient";
+import { HealthDataProvider } from "@/app/providers/userDataContext";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,19 +39,28 @@ export default function RootLayout({
       <body className={`${inter.className} bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}>
         <ThemeProvider>
           <OauthProviders>
-            <div className="flex flex-col min-h-screen">
 
-              {/* <NavbarV0 /> */}
-              <NavbarTaiwind />
-              <main className="flex-grow">
-                <div className="container mx-auto flex justify-center items-start min-h-screen">
+            <WagmiProviderClient>
+              <HealthDataProvider>
+
+                <div className="flex flex-col min-h-screen">
+
+                  {/* <NavbarV0 /> */}
+                  <NavbarTaiwind />
+                  <main className="flex-grow">
+                    <div className="container mx-auto flex justify-center items-start min-h-screen">
 
 
-                  {children}
+                      {children}
+                    </div>
+                  </main>
+
                 </div>
-              </main>
+              </HealthDataProvider>
 
-            </div>
+            </WagmiProviderClient>
+
+
           </OauthProviders>
         </ThemeProvider>
       </body>

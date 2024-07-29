@@ -1,5 +1,5 @@
 // src/utils/notifications.tsx
-import { toast, ToastOptions } from 'react-toastify';
+import { toast, ToastOptions, Id } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
   position: "top-right",
@@ -9,7 +9,7 @@ const defaultOptions: ToastOptions = {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "light", // default theme
+  // theme: "dark", // default theme
 };
 
 export const notifySuccess = (message: string, options?: ToastOptions) => {
@@ -30,4 +30,13 @@ export const notifyWarning = (message: string, options?: ToastOptions) => {
 
 export const notifyDefault = (message: string, options?: ToastOptions) => {
   toast(message, { ...defaultOptions, ...options });
+};
+
+// set toast.loading and update the notification yourself.
+export const notifyLoading = (message: string, options?: ToastOptions): Id => {
+  return toast.loading(message, { ...defaultOptions, ...options });
+};
+
+export const updateLoading = (id: Id, message: string, type: 'success' | 'error' | 'info' | 'warning' | 'default', options?: ToastOptions) => {
+  toast.update(id, { render: message, type, isLoading: false, ...defaultOptions, ...options });
 };
