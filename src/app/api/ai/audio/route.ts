@@ -1,48 +1,38 @@
 // src/app/api/ai/audio/route.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import OpenAI from 'openai';
 import { analyseAudio } from '@/lib/fx/audioAnalysis';
+import { Readable } from 'stream';
+import { ReadableStream as NodeReadableStream } from 'stream/web';
 
-const openai = new OpenAI();
+export const dynamic = 'force-dynamic'; // Configuration for dynamic routes
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function POST(request: Request) {
   const tempFilePath = path.join(process.cwd(), 'temp_audio.mp3');
   const fileStream = fs.createWriteStream(tempFilePath);
 
-  req.pipe(fileStream);
+  const streamPromise = new Promise<void>((resolve, reject) => {
+    // @ts-ignore
+    const readable = Readable.from(request.body as unknown as NodeReadableStream);
 
-  fileStream.on('finish', async () => {
-    try {
-      const text = await analyseAudio(tempFilePath);
-      fs.unlinkSync(tempFilePath); // Remove the temporary file
+    readable.pipe(fileStream);
 
-      res.status(200).json({ text });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ error: error.message });
-      } else {
-        res.status(500).json({ error: 'An unknown error occurred.' });
-      }
-    }
+    readable.on('end', resolve);
+    readable.on('error', reject);
   });
 
-  fileStream.on('error', (error) => {
+  try {
+    await streamPromise;
+    const text = await analyseAudio(tempFilePath);
+    fs.unlinkSync(tempFilePath); // Remove the temporary file
+    return NextResponse.json({ text });
+  } catch (error) {
+    fs.unlinkSync(tempFilePath); // Remove the temporary file
     if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     } else {
-      res.status(500).json({ error: 'An unknown error occurred.' });
+      return NextResponse.json({ error: 'An unknown error occurred.' }, { status: 500 });
     }
-  });
+  }
 }

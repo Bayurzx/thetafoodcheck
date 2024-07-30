@@ -100,3 +100,12 @@ export async function findOneIsFormFilled(providerId: string): Promise<User | nu
   return await userCollection.findOne({ providerId })
 }
 
+
+export const updateUserData = (id: string, userData: any) => {
+  return
+}
+
+export const getUserData = (id: string) => {
+  return
+  
+}

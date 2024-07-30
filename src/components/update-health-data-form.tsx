@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ObjectId } from 'mongodb';
-import { getUserData, updateUserData } from '../lib/mongodb';
+import { getUserData, updateUserData } from '@/lib/db/userDataCollection';
+
 
 import UpdateDynamicInputField from './component/updateDynamicInputField';
 import UpdateImageUpload from './component/updateImageUpload';

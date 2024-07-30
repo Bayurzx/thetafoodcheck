@@ -1,8 +1,7 @@
 import { NextAuthOptions, getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
-import { authConfig } from "@/app/api/auth/[...nextauth]/route"
-
+import { authConfig } from ".";
 
 // ## For Custom Authentication Checks
 
