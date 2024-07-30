@@ -8,7 +8,7 @@ import FormProfile from '@/components/form-profile'
 const Form = () => {
 
   return (
-    <div className="container mx-auto px-4 py-8 flex justify-center items-start min-h-screen">
+    <div className="container mx-auto px-4 py-8 flex justify-center items-start ">
       <div className="w-full max-w-2xl">
         {/* <Sidebar />
         <MainPage /> 

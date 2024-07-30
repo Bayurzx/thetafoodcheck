@@ -48,6 +48,32 @@ export function cmToFeetInches(cmString: string): string {
     return `${feet}'${Math.round(remainingInches)}"`;
 }
 
+export function calculateBMI_Imp(weightStr: string, heightStr: string): number {
+    if (!weightStr.trim() || !heightStr.trim()) {
+        throw new Error('Please provide both weight and height values.');
+    }
+
+    const weightInLbs = parseFloat(weightStr);
+    const heightInInches = parseFloat(heightStr);
+
+    if (isNaN(weightInLbs) || isNaN(heightInInches)) {
+        throw new Error('Invalid input. Please enter numbers for weight (lbs) and height (inches).');
+    }
+
+    // Additional input validation
+    if (weightInLbs <= 0 || weightInLbs > 1400) { // 1400 lbs is approximately the highest recorded human weight
+        throw new Error('Invalid weight. Please enter a weight between 0 and 1400 lbs.');
+    }
+
+    if (heightInInches <= 0 || heightInInches > 107) { // 107 inches is approximately the height of the tallest person recorded
+        throw new Error('Invalid height. Please enter a height between 0 and 107 inches.');
+    }
+
+    // BMI formula for imperial units: (weight in pounds * 703) / (height in inches * height in inches)
+    const bmi = (weightInLbs * 703) / (heightInInches * heightInInches);
+    return Number(bmi.toFixed(2)); // Round to 2 decimal places
+}
+
 export function calculateBMI(weightStr: string, heightStr: string): number {
     if (!weightStr.trim() || !heightStr.trim()) {
         throw new Error('Please provide both weight and height values.');

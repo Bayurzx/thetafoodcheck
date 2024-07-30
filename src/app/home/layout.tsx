@@ -44,12 +44,12 @@ export default function RootLayout({
             <WagmiProviderClient>
               <HealthDataProvider>
 
-                <div className="flex flex-col min-h-screen">
+                <div className="flex flex-col ">
 
                   {/* <NavbarV0 /> */}
                   <NavbarTaiwind />
                   <main className="flex-grow">
-                    <div className="container mx-auto flex justify-center items-start min-h-screen">
+                    <div className="container mx-auto flex justify-center items-start ">
 
 
                       {children}

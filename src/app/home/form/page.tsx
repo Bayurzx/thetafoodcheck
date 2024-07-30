@@ -2,7 +2,7 @@ import HealthDataForm from "@/components/health-data-form";
 
 const FormPage = () => {
   return (
-    <div className="container mx-auto px-4 py-8 flex justify-center items-start min-h-screen min-w-80">
+    <div className="container mx-auto px-4 py-8 flex justify-center items-start  min-w-80">
       <div className="w-full max-w-2xl">
         {/* <Sidebar />
         <MainPage /> 
