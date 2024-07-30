@@ -6,9 +6,6 @@ todo.md
 _*.md
 _x_*
 delete/
-**/assets/images
-**/assets/[m-r]*
-**/assets/css/scss
 vision-ai.json
 
 # dependencies
