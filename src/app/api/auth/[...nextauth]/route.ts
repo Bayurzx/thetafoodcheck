@@ -74,6 +74,7 @@ export const authConfig: NextAuthOptions = {
                     provider: account?.provider,
                     providerId: account?.providerAccountId,
                     healthDataFilled: false, // Set default to false
+                    timestamp: Date.now(),
 
                 });
             }

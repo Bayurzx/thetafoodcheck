@@ -104,6 +104,7 @@ export interface AuthData {
     provider?: string;
     providerId?: string;
     healthDataFilled?: boolean;
+    timestamp?: number;
 }
 
 
