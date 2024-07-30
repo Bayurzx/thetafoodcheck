@@ -113,7 +113,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/bayurzx) - email@example.com
+Your Name - [@your_twitter](https://twitter.com/AdebayoOmolumo) - email@example.com
 
 Project Link: [https://github.com/Bayurzx/thetafoodcheck.git](https://github.com/Bayurzx/thetafoodcheck.git)
 
