@@ -9,7 +9,7 @@ delete/
 **/assets/images
 **/assets/[m-r]*
 **/assets/css/scss
-
+vision-ai.json
 
 # dependencies
 /node_modules
