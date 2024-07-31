@@ -28,7 +28,7 @@ export const config = {
   matcher: [
     "/home/:path*",
     // "/home/dashboard/:path*",
-    // "/api/((?!hello).*)", // Allow all API except /api/hello
+    "/api/((?!hello).*)", // Allow all API except /api/hello
     // "/api/:path*", // Allow all API
   ]
 }
