@@ -7,7 +7,7 @@ import { notifySuccess, notifyError, notifyLoading, updateLoading } from '@/lib/
 import { useTheme } from '@/app/providers/theme'; // Assuming you have a theme provider
 import { truncateTo256 } from '@/lib/fx/conversion';
 import MarkdownPage from './markdown-page';
-import { fakeAnalysis } from '@/lib/utils/faker';
+import Link from 'next/link';
 
 
 
@@ -20,7 +20,7 @@ const UploadImg = () => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dropAreaRef = useRef<HTMLDivElement>(null);
-    const { healthData } = useHealthData()
+    const { healthData, loading } = useHealthData()
     const { theme } = useTheme();
 
 
@@ -138,14 +138,14 @@ const UploadImg = () => {
         }
     };
 
-// change to analysis
+    // change to analysis
     if (analysis) {
         return (
             <>
                 <NotificationContainer theme={theme} />
 
                 <div>
-                <MarkdownPage data={analysis} />
+                    <MarkdownPage data={analysis} />
                 </div>
             </>
         )
@@ -201,12 +201,26 @@ const UploadImg = () => {
             </form>
 
 
-            {healthData && (
-                <div className='max-w-sm'>
-                    <h3>Health Data is ready {healthData.name}!</h3>
-                    {/* <pre>{JSON.stringify(healthData, () => { healthData.photo = "" }, 2)}</pre> */}
-                </div>
-            )}
+            <div className='flex justify-center items-center'>
+                {loading ? (
+                    <div className='text-center'>
+                        <h3>Loading your health data...</h3>
+                    </div>
+                ) : healthData?.name ? (
+                    <div className='text-center'>
+                        <h3>Health Data is ready, {healthData.name}!</h3>
+                    </div>
+                ) : (
+                    <div className='text-center'>
+                        <h3>
+                            Health Data is not set. Go fill your health data{' '}
+                            <Link href="/home/form" className='text-blue-500 hover:text-blue-700 underline'>
+                                here
+                            </Link>!
+                        </h3>
+                    </div>
+                )}
+            </div>
 
         </>
     );
