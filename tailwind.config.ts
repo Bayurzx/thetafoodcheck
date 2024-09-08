@@ -9,6 +9,8 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+
+    "./node_modules/flowbite-react/lib/**/*.js",
   ],
   prefix: "",
   theme: {
@@ -78,6 +80,7 @@ const config = {
     require("tailwindcss-animate"),
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require('flowbite/plugin')({charts: true,}),
   ],
 } satisfies Config
 

@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
+import { LineChart } from './charts/line-chart';
 
 function DashboardView() {
     return (
         <>
             <section className="bg-[#071e34] flex flex-col md:flex-row font-medium justify-center rounded-lg p-6">
-                <section className="mx-5 mb-6 md:mb-0 w-64 bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">
+
+                <section className="px-8 py-6 mx-5 my-5 mb-6 md:mb-0 w-64 bg-[#20354b] rounded-2xl shadow-lg">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-400 text-sm">2d ago</span>
                         <span className="text-emerald-400">
@@ -35,8 +37,8 @@ function DashboardView() {
                         <span>40%</span>
                     </div>
                 </section>
-                
-                <section className="mx-5 w-64 bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg">
+
+                <section className="px-8 py-6 mx-5 my-5 mb-6 md:mb-0 w-64 bg-[#20354b] rounded-2xl shadow-lg">
                     <div className="flex items-center justify-between">
                         <span className="text-gray-400 text-sm">2d ago</span>
                         <span className="text-emerald-400">
@@ -66,7 +68,17 @@ function DashboardView() {
                         <span>40%</span>
                     </div>
                 </section>
+
             </section>
+
+
+
+            <section className="bg-[#071e34] flex flex-col md:flex-row font-medium justify-center rounded-lg p-6">
+                <section className="mx-5 flex-1 bg-[#20354b] rounded-2xl p-6 shadow-lg">
+                    <LineChart type="line" height="100%" width="100%" />
+                </section>
+            </section>
+
         </>
     );
 }

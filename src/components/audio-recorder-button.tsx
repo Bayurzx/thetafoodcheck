@@ -55,7 +55,7 @@ const AudioRecorderButton: React.FC = () => {
     setTimeout(() => {
       mediaRecorder.stop();
       setIsRecording(false);
-    }, 5000); // Record for 5 seconds
+    }, 50000); // Record for 5 seconds
   };
 
   return (

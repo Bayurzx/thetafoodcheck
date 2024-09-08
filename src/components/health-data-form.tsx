@@ -11,6 +11,7 @@ import { useHealthData } from '@/app/providers/userDataContext';
 import NotificationContainer from './notifications-container';
 import { useTheme } from '@/app/providers/theme'; // Assuming you have a theme provider
 import { notifyError, notifyInfo } from '@/lib/utils/notifications';
+import AudioRecorderButton from './audio-recorder-button';
 
 
 
@@ -21,7 +22,7 @@ export default function HealthDataForm() {
   const router = useRouter();
   const { healthData } = useHealthData();
   const { theme } = useTheme();
-  
+
 
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
@@ -61,19 +62,19 @@ export default function HealthDataForm() {
   });
 
 
-  useEffect(() => {
-    const checkFormFilled = async () => {
-      if (healthData) {
-        notifyInfo("You have already filled the form.\nRedirecting you to home");
-        
-        setTimeout(() => {
-          router.push('/home');
-        }, 5000);
-      }
-    };
+  // useEffect(() => {
+  //   const checkFormFilled = async () => {
+  //     if (healthData) {
+  //       notifyInfo("You have already filled the form.\nRedirecting you to home");
 
-    checkFormFilled();
-  }, [healthData, router]);
+  //       setTimeout(() => {
+  //         router.push('/home');
+  //       }, 5000);
+  //     }
+  //   };
+
+  //   checkFormFilled();
+  // }, [healthData, router]);
 
 
   useEffect(() => {
@@ -200,6 +201,14 @@ export default function HealthDataForm() {
     <>
       <NotificationContainer theme={theme} />
 
+      <div className="w-full flex">
+        {/* Audio recorder feature starts here */}
+        <div className='items-end'>
+          <AudioRecorderButton />
+
+        </div>
+      </div>
+
       <div className="w-full flex justify-center px-12 py-12">
         <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="w-full max-w-4xl px-4 lg:px-8">
           <div className="space-y-12">
@@ -209,9 +218,10 @@ export default function HealthDataForm() {
                   Health Data Profile
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
-                You can view your health information from your profile.
+                  You can view your health information from your profile.
 
                 </p>
+
 
                 <div className="sm:col-span-1 mt-3 mb-3">
                   <label htmlFor="name" className="block text-md font-medium leading-6 text-gray-900 dark:text-gray-100">

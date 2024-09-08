@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   } catch (error) {
     fs.unlinkSync(tempFilePath); // Remove the temporary file
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message+"xx" }, { status: 500 });
     } else {
       return NextResponse.json({ error: 'An unknown error occurred.' }, { status: 500 });
     }
