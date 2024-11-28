@@ -1,15 +1,17 @@
-// src/app/api/ai/audio/route.ts
-import { NextResponse } from 'next/server';
+
 import fs from 'fs';
 import path from 'path';
+import ffmpeg from 'fluent-ffmpeg';
 import { analyseAudio } from '@/lib/fx/audioAnalysis';
+import { NextResponse } from 'next/server';
 import { Readable } from 'stream';
-import { ReadableStream as NodeReadableStream } from 'stream/web';
+
 
 export const dynamic = 'force-dynamic'; // Configuration for dynamic routes
 
 export async function POST(request: Request) {
   const tempFilePath = path.join(process.cwd(), 'temp_audio.mp3');
+  const convertedFilePath = path.join(process.cwd(), 'converted_audio.wav');
   const fileStream = fs.createWriteStream(tempFilePath);
 
   const streamPromise = new Promise<void>((resolve, reject) => {
@@ -20,8 +22,7 @@ export async function POST(request: Request) {
       readable.pipe(fileStream);
 
       readable.on('end', resolve);
-      readable.on('error', (error) => {
-        
+      readable.on('error', (error: Error) => {
         console.error(`Error piping audio stream: ${error.message}`);
         reject(new Error('Failed to pipe the audio stream.'));
       });
@@ -32,24 +33,33 @@ export async function POST(request: Request) {
 
   try {
     await streamPromise;
-    
-    // Ensure the stream wrote the file properly
-    if (!fs.existsSync(tempFilePath)) {
-      throw new Error(`Failed to write audio file at ${tempFilePath}`);
-    }
 
-    const text = await analyseAudio(tempFilePath);
-    fs.unlinkSync(tempFilePath); // Remove the temporary file
+    // Convert the audio to a supported format (WAV in this case)
+    await new Promise<void>((resolve, reject) => {
+      ffmpeg(tempFilePath)
+        .toFormat('wav')
+        .on('end', () => resolve())
+        .on('error', (error: Error) => {
+          console.error(`Error converting audio: ${error.message}`);
+          reject(new Error('Failed to convert audio to WAV format.'));
+        })
+        .save(convertedFilePath);
+
+    });
+
+    const text = await analyseAudio(convertedFilePath);
+
+    // Cleanup: Remove the temp files
+    // fs.unlinkSync(tempFilePath);
+    // fs.unlinkSync(convertedFilePath);
 
     return NextResponse.json({ text });
 
   } catch (error) {
-    // Cleanup the temp file if it exists
-    if (fs.existsSync(tempFilePath)) {
-      fs.unlinkSync(tempFilePath);
-    }
+    // Cleanup: Remove the temp files if they exist
+    if (fs.existsSync(tempFilePath)) fs.unlinkSync(tempFilePath);
+    if (fs.existsSync(convertedFilePath)) fs.unlinkSync(convertedFilePath);
 
-    // Handle and log the error
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     console.error(`Error in POST /api/ai/audio: ${errorMessage}`);
     return NextResponse.json({ error: errorMessage }, { status: 500 });
